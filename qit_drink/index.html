@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qit喝水</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #qrcode {
+            text-align: center;
+        }
+        .random-number {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script src="qrcode.min.js"></script>
+</head>
+<body>
+    <div id="qrcode">
+        <div class="random-number" id="randomNumber"></div>
+        <canvas id="qrCanvas"></canvas>
+    </div>
+
+    <script>
+        // 生成以13开头的18位数字
+        function generateRandomNumber() {
+            const random16Digits = Math.floor(Math.random() * 1e16).toString().padStart(16, '0');
+            return '13' + random16Digits;
+        }
+
+        // 更新随机数和二维码
+        function updateQRCode() {
+            const randomNumber = generateRandomNumber();
+            document.getElementById('randomNumber').textContent = randomNumber;
+
+            const canvas = document.getElementById('qrCanvas');
+            QRCode.toCanvas(canvas, randomNumber, { width: 300 }, function (error) {
+                if (error) console.error(error);
+            });
+        }
+
+        // 每5秒更新一次
+        setInterval(updateQRCode, 5000);
+
+        // 初始化
+        updateQRCode();
+    </script>
+</body>
+</html>
